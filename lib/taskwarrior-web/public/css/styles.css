@@ -71,7 +71,7 @@ span.crud-links { white-space: nowrap; }
 
 /** Icon spacing **/
 h2.project i { vertical-align: 35%; }
-span.crud-links i { margin-top: 4px; }
+span.crud-links i { margin: 4px 10px;}
 
 /** Table sorting **/
 table.table thead .sorting,
@@ -93,4 +93,15 @@ table.table thead .sorting_desc_disabled { background: url('../img/sort_desc_dis
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 20vw;
+}
+
+input[type="checkbox"]{
+  margin-top: 20px;
+  margin-left: 20px;
+  width: 50px;
+  height: 50px;
+}
+
+.tdCheckbox{
+  width: 80px;
 }

@@ -8,32 +8,16 @@
     <p>You've finished all of the things you need to do. Enjoy a nice break.</p>
   <% else %>
     <table class="table table-striped table-hover table-sortable">
-      <thead>
-        <tr>
-          <% if params[:status] == 'pending' %><th class="no-sort"></th><% end %>
-          <th>Description</th>
-          <th>Project</th>
-          <th>Due</th>
-          <%= 
-            case params[:status]
-            when 'waiting' then '<th>Hidden until</th>'
-            when 'completed' then '<th>Completed on</th>'
-            when 'deleted' then '<th>Deleted on</th>'
-            end
-          %>
-          <th>Tags</th>
-          <th data-sort-map='{"H": 0, "M": 1, "": 2, "L": 3}'>Priority</th>
-          <% if can_edit %><th class="no-sort"></th><% end %>
-        </tr>
-      </thead>
       <tbody>
         <% @tasks.each do |task| %>
           <tr<%= %{ class="#{colorize_date(task.due)}"} if task.active? %>>
             <% if params[:status] == 'pending' %>
-              <td><input type="checkbox" class="complete" data-task-id="<%= task.uuid %>" /></td>
+              <td class="tdCheckbox"><input type="checkbox" class="complete" data-task-id="<%= task.uuid %>" /></td>
             <% end %>
             <td>
-              <%= task.description %>
+              <b>
+                <%= task.description %>
+              </b>
               <% unless task.annotations.empty? %>
                 <table>
                   <% task.annotations.each do |annotation| %>
@@ -53,18 +37,18 @@
                   <% end %>
                 </table>
               <% end %>
-            </td>
-            <td><a href="/projects/<%= linkify(task.project) %>"><%= task.project %></a></td>
-            <td><%= format_date(task.due) unless task.due.nil? %></td>
+            <br />
+            <a href="/projects/<%= linkify(task.project) %>"><%= task.project %></a> <br />
+            <%= format_date(task.due) unless task.due.nil? %>
             <%= 
               case params[:status]
-              when 'waiting' then '<td>' + (format_date(task.wait) unless task.wait.nil?) + '</td>'
-              when 'completed', 'deleted' then '<td>' + (format_date(task.end) unless task.end.nil?) + '</td>'
+              when 'waiting' then '' + (format_date(task.wait) unless task.wait.nil?) + '<br />'
+              when 'completed', 'deleted' then '' + (format_date(task.end) unless task.end.nil?) + '<br />'
               end
             %>
-            <td><%= format_tags(task.tags) unless task.tags.nil? %></td>
-            <td><%= task.priority unless task.priority.nil? %></td>
-            <% if can_edit %><td><%= crud_links(task) %></td><% end %>
+            <%= format_tags(task.tags) unless task.tags.nil? %> <br />
+            <%= task.priority unless task.priority.nil? %> <br />
+            <% if can_edit %><%= crud_links(task) %><% end %>
           </tr>
         <% end %>
       </tbody>
